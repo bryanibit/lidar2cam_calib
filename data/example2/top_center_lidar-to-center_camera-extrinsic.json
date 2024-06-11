@@ -1,0 +1,34 @@
+{
+    "top_center_lidar-to-center_camera-extrinsic": {
+        "sensor_name": "top_center_lidar",
+        "target_sensor_name": "center_camera",
+        "device_type": "relational",
+        "param_type": "extrinsic",
+        "param": {
+            "time_lag": 0,
+            "sensor_calib": {
+                "rows": 4,
+                "cols": 4,
+                "type": 6,
+                "continuous": true,
+                "data": [
+                    [
+                        -0.496122,-0.867574,0.0343135,-0.191235
+                    ],
+                    [
+                        -0.298658,0.133412,-0.944989,0.544176
+                    ],
+                    [
+                        0.815269,-0.479078,-0.325297,0.894527
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                ]
+            }
+        }
+    }
+}

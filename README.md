@@ -18,10 +18,11 @@ Run container with the following command:
 xhost +
 docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --device=/dev/dri:/dev/dri --network=host -v <local_dir>:/app/vol lidar2camera:v0.6 /bin/bash
 ``` 
-And then put the repo to the `<local_dir>`. In container, build the repo and run it.
+And then `<local_dir>` can be the repo. In container, build the repo and run it.
 
 ## Compile
-Compile in their respective folders
+Compile in their respective folders.  
+
 **Note** that if you input pointcloud data, comment `#define BIN` in `src/run_lidar2camera.cpp`. On the contrary, add `#define BIN` if inputting binary pointcloud.
 
 ```shell
@@ -36,7 +37,7 @@ cmake .. && make
 1. Four input files: 
 
    ```
-   Usage: ./run_lidar2camera <image_path> <pcd_path> <intrinsic_json> <extrinsic_json>
+   Usage: ./run_lidar2camera <image_path> <pcd_or_bin_path> <intrinsic_json> <extrinsic_json>
    ```
 + **image_path:** image file from the Camera sensor
 + **pcd_path:** PCD file from the Lidar sensor
@@ -46,8 +47,10 @@ cmake .. && make
 
 2. Run the test sample:
 
-   The executable file is under the bin folder.  
-e.g. use `./run_lidar2camera ../data/example1/0.png ../data/example1/0.pcd ../data/example1/center_camera-intrinsic.json ../data/example1/top_center_lidar-to-center_camera-extrinsic.json' in `/bin` dir. Make sure that `#define BIN` is commented.
+   The executable file is under the `/bin` folder.  
+
+e.g. use `./run_lidar2camera ../data/example1/0.png ../data/example1/0.pcd ../data/example1/center_camera-intrinsic.json ../data/example1/top_center_lidar-to-center_camera-extrinsic.json' in `/bin` dir.   
+Make sure that `#define BIN` is commented.
 
 3. Calibration panel:
 

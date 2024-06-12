@@ -11,7 +11,7 @@ This is a project for LiDAR to camera calibration， including automatic calibra
 - Pangolin 0.6
 
 ## Using docker (optional)
-In root dir, use `docker build -t lidar2cam:0.6 .` to build image.  
+In root dir, use `docker build -t lidar2camera:v0.6 .` to build image.  
 Run container with the following command:
 
 ```shell

@@ -10,8 +10,19 @@ This is a project for LiDAR to camera calibration， including automatic calibra
 - PCL 1.9 above
 - Pangolin 0.6
 
+## Using docker (optional)
+In root dir, use `docker build -t lidar2cam:0.6 .` to build image.  
+Run container with the following command:
+
+```shell
+xhost +
+docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --device=/dev/dri:/dev/dri --network=host -v <local_dir>:/app/vol lidar2camera:v0.6 /bin/bash
+``` 
+And then put the repo to the `<local_dir>`. In container, build the repo and run it.
+
 ## Compile
 Compile in their respective folders
+**Note** that if you input pointcloud data, comment `#define BIN` in `src/run_lidar2camera.cpp`. On the contrary, add `#define BIN` if inputting binary pointcloud.
 
 ```shell
 # mkdir build
@@ -19,9 +30,6 @@ mkdir -p build && cd build
 # build
 cmake .. && make
 ```
-## Using docker (optional)
-In root dir, use `docker build -t lidar2cam:0.6 .` to build image.  
-Run container with `docker run -it -rm lidar2cam:0.6 -v <local_dir>:/app/vol /bin/bash` and then put the repo to the `<local_dir>`. In container, build the repo and run it.
 
 ## Manual calibration tool
 
@@ -36,15 +44,10 @@ Run container with `docker run -it -rm lidar2cam:0.6 -v <local_dir>:/app/vol /bi
 + **extrinsic_json:** JSON file of initial values of extrinsic parameters between sensors
 </br>
 
-
 2. Run the test sample:
 
-   The executable file is under the bin folder.
-
-   ```
-   cd ~./manual_calib/
-   ./bin/run_lidar2camera data/0.png data/0.pcd data/center_camera-intrinsic.json data/top_center_lidar-to-center_camera-extrinsic.json
-   ```
+   The executable file is under the bin folder.  
+e.g. use `./run_lidar2camera ../data/example1/0.png ../data/example1/0.pcd ../data/example1/center_camera-intrinsic.json ../data/example1/top_center_lidar-to-center_camera-extrinsic.json' in `/bin` dir. Make sure that `#define BIN` is commented.
 
 3. Calibration panel:
 

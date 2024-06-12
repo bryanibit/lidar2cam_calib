@@ -5,7 +5,7 @@
  * Ouyang Jinhua <ouyangjinhua@pjlab.org.cn>
  */
  
-#define BIN
+//#define BIN
 #include <boost/filesystem.hpp>
 #include <opencv2/opencv.hpp>
 #include <pangolin/pangolin.h>

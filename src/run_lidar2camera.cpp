@@ -247,8 +247,8 @@ int main(int argc, char **argv) {
   pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZI>);
   for (const auto& p : points) {
     pcl::PointXYZI xp;
-    xp.x = p.x;
-    xp.y = p.y;
+    xp.x = p.y;
+    xp.y = -p.x;
     xp.z = p.z;
     xp.intensity = p.i;
     cloud->push_back(xp);

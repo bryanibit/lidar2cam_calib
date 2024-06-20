@@ -16,7 +16,8 @@ Run container with the following command:
 
 ```shell
 xhost +
-docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --device=/dev/dri:/dev/dri --network=host -v <local_dir>:/app/vol lidar2camera:v0.6 /bin/bash
+docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --device=/dev/dri:/dev/dri \ 
+               --network=host -v <local_dir>:/app/vol lidar2camera:v0.6 /bin/bash
 ``` 
 And then `<local_dir>` can be the repo. In container, build the repo and run it.
 
@@ -51,6 +52,8 @@ cmake .. && make
 
 e.g. use `./run_lidar2camera ../data/example1/0.png ../data/example1/0.pcd ../data/example1/center_camera-intrinsic.json ../data/example1/top_center_lidar-to-center_camera-extrinsic.json' in `/bin` dir.   
 Make sure that `#define BIN` is commented.
+## TODO  
+e.g. use `./run_lidar2camera ../data/example2/dataset/*/camera/data/000000.png ../data/example2/dataset/*/lidar/data/000000.bin ../data/example2/center_camera-intrinsic.json ../data/example2/top_center_lidar-to-center_camera-extrinsic.json` Make sure that `#define BIN` is **uncommented**.
 
 3. Calibration panel:
 

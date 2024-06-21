@@ -24,8 +24,6 @@ And then `<local_dir>` can be the repo. In container, build the repo and run it.
 ## Compile
 Compile in their respective folders.  
 
-**Note** that if you input pointcloud data, comment `#define BIN` in `src/run_lidar2camera.cpp`. On the contrary, add `#define BIN` if inputting binary pointcloud.
-
 ```shell
 # mkdir build
 mkdir -p build && cd build
@@ -51,10 +49,7 @@ cmake .. && make
    The executable file is under the `/bin` folder.  
 
 e.g. use `./run_lidar2camera ../data/example1/0.png ../data/example1/0.pcd ../data/example1/center_camera-intrinsic.json ../data/example1/top_center_lidar-to-center_camera-extrinsic.json' in `/bin` dir.   
-Make sure that `#define BIN` is commented.
-## TODO  
-e.g. use `./run_lidar2camera ../data/example2/dataset/*/camera/data/000000.png ../data/example2/dataset/*/lidar/data/000000.bin ../data/example2/center_camera-intrinsic.json ../data/example2/top_center_lidar-to-center_camera-extrinsic.json` Make sure that `#define BIN` is **uncommented**.
-
+e.g. use `./run_lidar2camera ../data/example2/dataset/*/camera/data/000000.png ../data/example2/dataset/*/lidar/data/000000.bin ../data/example2/center_camera-intrinsic.json ../data/example2/top_center_lidar-to-center_camera-extrinsic.json`.   
 3. Calibration panel:
 
    <img src="./images/lidar2camera_panel.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>

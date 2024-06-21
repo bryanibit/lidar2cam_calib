@@ -3,3 +3,5 @@ Pangolin
 build
 bin
 dataset
+*.zip
+*.tar.gz

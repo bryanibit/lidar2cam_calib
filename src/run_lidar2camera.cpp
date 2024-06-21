@@ -5,7 +5,6 @@
  * Ouyang Jinhua <ouyangjinhua@pjlab.org.cn>
  */
  
-//#define BIN
 #include <boost/filesystem.hpp>
 #include <opencv2/opencv.hpp>
 #include <pangolin/pangolin.h>
@@ -206,6 +205,21 @@ bool ManualCalibration(int key_input) {
   return real_hit;
 }
 
+std::vector<string> split(string& s, const string& delimiter){
+	int prev_pos = 0;
+	int pos = 0;
+        vector<string> output;
+	pos = s.find_first_not_of(delimiter, prev_pos);
+	prev_pos = s.find_first_of(delimiter, pos);
+	while (prev_pos != string::npos || pos != string::npos){
+		output.push_back(s.substr(pos, prev_pos - pos));
+		pos = s.find_first_not_of(delimiter, prev_pos);
+		prev_pos = s.find_first_of(delimiter, pos);
+
+	}
+	return output;
+}
+
 int main(int argc, char **argv) {
   if (argc != 5) {
     cout << "Usage: ./run_lidar2camera <image_path> <pcd_path> "
@@ -224,43 +238,41 @@ int main(int argc, char **argv) {
   string extrinsic_json = argv[4];
   cv::Mat img = cv::imread(camera_path);
   std::cout << intrinsic_json << std::endl;
-  
-#if defined(BIN)
-  std::ifstream bin_file(lidar_path, std::ios::binary);
-    if (!bin_file.is_open()) {
-    std::cerr << "Failed to open BIN file!" << std::endl;
-    return -1;
-  }
-
-// Assuming the point cloud consists of XYZ coordinates
-// Adjust this according to your binary format
-  
-
-  std::vector<PointXYZIR> points;
-  PointXYZIR point;
-  while (bin_file.read(reinterpret_cast<char*>(&point), sizeof(PointXYZIR))) {
-    points.push_back(point);
-  }
-  bin_file.close();
-
-  // Convert to PCL point cloud
+  auto name_split = split(lidar_path, ".");
   pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZI>);
-  for (const auto& p : points) {
-    pcl::PointXYZI xp;
-    xp.x = p.y;
-    xp.y = -p.x;
-    xp.z = p.z;
-    xp.intensity = p.i;
-    cloud->push_back(xp);
+  if(name_split.back() == "bin"|| name_split.back() == "BIN"){
+	  std::ifstream bin_file(lidar_path, std::ios::binary);
+	    if (!bin_file.is_open()) {
+	    std::cerr << "Failed to open BIN file!" << std::endl;
+	    return -1;
+	  }
+	// Assuming the point cloud consists of XYZ coordinates
+	// Adjust this according to your binary format
+	  std::vector<PointXYZIR> points;
+	  PointXYZIR point;
+	  while (bin_file.read(reinterpret_cast<char*>(&point), sizeof(PointXYZIR))) {
+	    points.push_back(point);
+	  }
+	  bin_file.close();
+	  // Convert to PCL point cloud
+	  for (const auto& p : points) {
+		pcl::PointXYZI xp;
+		xp.x = p.y;
+		xp.y = -p.x;
+		xp.z = p.z;
+		xp.intensity = p.i;
+		cloud->push_back(xp);
+	  }
+  }else if(name_split.back() == "pcd"|| name_split.back() == "PCD"){
+	  if (pcl::io::loadPCDFile<pcl::PointXYZI>(lidar_path, *cloud) == -1) {
+	    PCL_ERROR("Couldn't read pcd file\n");
+	    return (-1);
+	  }
   }
-#else
-  pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(
-      new pcl::PointCloud<pcl::PointXYZI>);
-  if (pcl::io::loadPCDFile<pcl::PointXYZI>(lidar_path, *cloud) == -1) {
-    PCL_ERROR("Couldn't read file test_pcd.pcd \n");
-    return (-1);
+  else{
+      	  std::cout << "\033[1;31m[ERROR] Not find pcd or bin lidar file from the 2nd input argument!\n\033[0m";
+      	  return -1;
   }
-#endif
   pcl::PointCloud<pcl::PointXYZI> pcd = *cloud;
   // load intrinsic
   Eigen::Matrix3d K;
